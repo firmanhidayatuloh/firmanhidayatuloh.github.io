@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="id" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tentang Firman Hidayatuloh Tech Insights</title>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&amp;family=Space+Grotesk:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+  <style>
+  html, body { height: 100%; width: 100%; }
+  body {
+    font-family: 'Space Grotesk', sans-serif;
+    background: #05070d;
+    color: #e6f1ff;
+  }
+  .font-mono { font-family: 'JetBrains Mono', monospace; }
+
+  .circuit-bg {
+    background-color: #05070d;
+    background-image:
+      linear-gradient(rgba(34, 211, 238, 0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(34, 211, 238, 0.06) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+  .circuit-bg::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 20% 20%, rgba(34, 211, 238, 0.15), transparent 40%),
+      radial-gradient(circle at 80% 10%, rgba(59, 130, 246, 0.2), transparent 50%),
+      radial-gradient(circle at 50% 90%, rgba(34, 211, 238, 0.1), transparent 50%);
+    pointer-events: none;
+  }
+
+  .neon-text { color: #22d3ee; text-shadow: 0 0 12px rgba(34, 211, 238, 0.5); }
+  .neon-border { box-shadow: 0 0 0 1px rgba(34, 211, 238, 0.4), 0 0 24px rgba(34, 211, 238, 0.15); }
+  .neon-btn {
+    background: linear-gradient(135deg, #22d3ee, #0891b2);
+    color: #05070d;
+    box-shadow: 0 0 24px rgba(34, 211, 238, 0.4);
+    transition: all 0.3s;
+  }
+  .neon-btn:hover {
+    box-shadow: 0 0 40px rgba(34, 211, 238, 0.7);
+    transform: translateY(-2px);
+  }
+
+  .glass-card {
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.8), rgba(2, 6, 23, 0.9));
+    border: 1px solid rgba(34, 211, 238, 0.15);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s;
+  }
+  .glass-card:hover {
+    border-color: rgba(34, 211, 238, 0.5);
+    transform: translateY(-4px);
+    box-shadow: 0 10px 40px rgba(34, 211, 238, 0.15);
+  }
+
+  .tag-pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 10px;
+    background: rgba(34, 211, 238, 0.1);
+    border: 1px solid rgba(34, 211, 238, 0.3);
+    color: #22d3ee;
+    border-radius: 999px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .nav-link { position: relative; transition: color 0.2s; }
+  .nav-link::after {
+    content: ""; position: absolute; left: 0; bottom: -4px;
+    width: 0; height: 2px; background: #22d3ee;
+    transition: width 0.3s; box-shadow: 0 0 8px #22d3ee;
+  }
+  .nav-link:hover::after { width: 100%; }
+  .nav-link:hover { color: #22d3ee; }
+
+  .blink { animation: blink 1s infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  .article-content {
+    line-height: 1.8;
+    font-size: 1.05rem;
+  }
+  .article-content h2 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    color: #22d3ee;
+  }
+  .article-content h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+  .article-content p {
+    margin-bottom: 1.25rem;
+    color: #cbd5e1;
+  }
+  .article-content ul, .article-content ol {
+    margin-left: 1.5rem;
+    margin-bottom: 1.25rem;
+  }
+  .article-content li {
+    margin-bottom: 0.5rem;
+    color: #cbd5e1;
+  }
+  .code-block {
+    background: rgba(15, 23, 42, 0.9);
+    border: 1px solid rgba(34, 211, 238, 0.2);
+    border-radius: 0.5rem;
+    padding: 1.25rem;
+    margin: 1.5rem 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    overflow-x: auto;
+    color: #22d3ee;
+  }
+
+  ::-webkit-scrollbar { width: 10px; }
+  ::-webkit-scrollbar-track { background: #05070d; }
+  ::-webkit-scrollbar-thumb { background: rgba(34, 211, 238, 0.3); border-radius: 5px; }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(34, 211, 238, 0.6); }
+  </style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full w-full overflow-auto">
+  <div class="w-full min-h-full">
+   <header class="sticky top-0 z-50 backdrop-blur-lg border-b border-cyan-500/20" style="background: rgba(5, 7, 13, 0.85);">
+    <nav class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+     <div class="flex items-center gap-3">
+      <div class="relative w-10 h-10 flex items-center justify-center rounded-lg neon-border" style="background: linear-gradient(135deg, #0f172a, #1e293b);">
+       <i data-lucide="network" class="text-cyan-400" style="width:22px;height:22px;"></i>
+      </div>
+      <div>
+       <div class="font-bold text-lg tracking-tight">
+        Firman Hidayatuloh
+       </div>
+       <div class="font-mono text-[10px] text-cyan-400/80 uppercase tracking-widest">
+        Tech &amp; Network Insights
+       </div>
+      </div>
+     </div>
+     <ul class="hidden md:flex items-center gap-8 font-mono text-sm">
+      <li><a href="http://firmanhidayatuloh.github.io/" class="nav-link text-slate-300">Home</a></li>
+      <li><a href="http://firmanhidayatuloh.github.io/about/" class="nav-link text-slate-300">About</a></li>
+      <li><a href="https://firmanhidayatuloh.com/" class="nav-link text-slate-300">Blog</a></li>
+      <li><a href="http://firmanhidayatuloh.github.io/contact/" class="nav-link text-slate-300">Contact</a></li>
+      <li><a href="http://firmanhidayatuloh.github.io/document/" class="nav-link text-slate-300">Document</a></li>
+      <li><a href="http://firmanhidayatuloh.github.io/disclaimer/" class="nav-link text-slate-300">Disclaimer</a></li>
+      <li><a href="http://firmanhidayatuloh.github.io/privacy/" class="nav-link text-slate-300">Privacy</a></li>
+      <li><a href="http://firmanhidayatuloh.github.io/terms/" class="nav-link text-slate-300">Terms</a></li>
+     </ul><button class="neon-btn px-5 py-2 rounded-lg font-mono text-sm font-bold uppercase tracking-wider">Connect </button>
+    </nav>
+   </header><!-- Hero Section -->
+   <section class="circuit-bg relative overflow-hidden py-20 px-6 border-b border-cyan-500/10">
+    <div class="max-w-5xl mx-auto text-center">
+     <div class="inline-block mb-6">
+      <span class="tag-pill"><i data-lucide="info" style="width:12px;height:12px;"></i> ABOUT FIRMAN HIDAYATULOH</span>
+     </div>
+     <h1 class="text-5xl md:text-6xl font-bold mb-6 tracking-tight">Tentang <span class="neon-text">Firman Hidayatuloh Tech Insights</span></h1>
+     <p class="text-lg md:text-xl text-slate-300 max-w-3xl mx-auto leading-relaxed">Portal teknologi IT dan jaringan komputer untuk para developer, sysadmin, dan network engineer Indonesia yang ingin terus update dengan tren industri terkini.</p>
+    </div>
+   </section><!-- Our Story Section -->
+   <section class="relative py-16 px-6 border-b border-cyan-500/10">
+    <div class="max-w-5xl mx-auto">
+     <div class="grid md:grid-cols-2 gap-12 items-center">
+      <div>
+       <h2 class="text-3xl md:text-4xl font-bold mb-6 tracking-tight">Misi <span class="neon-text">Firman Hidayatuloh</span></h2>
+       <p class="text-slate-300 leading-relaxed mb-4">Firman Hidayatuloh Tech Insights didirikan dengan visi untuk menghadirkan pengetahuan teknologi berkualitas tinggi yang mudah dipahami oleh semua kalangan developer dan professional IT di Indonesia.</p>
+       <p class="text-slate-300 leading-relaxed mb-6">Kami percaya bahwa teknologi terbaik dimulai dari edukasi yang solid. Setiap artikel, tutorial, dan insight yang kami bagikan dirancang untuk membantu Anda menguasai infrastructure modern, networking, cybersecurity, dan DevOps practices yang relevan dengan industri saat ini.</p>
+       <div class="flex gap-4">
+        <div class="flex items-center gap-2">
+         <i data-lucide="check-circle" class="text-cyan-400" style="width:20px;height:20px;"></i> <span class="text-slate-300">Konten berkualitas tinggi</span>
+        </div>
+        <div class="flex items-center gap-2">
+         <i data-lucide="check-circle" class="text-cyan-400" style="width:20px;height:20px;"></i> <span class="text-slate-300">Selalu update</span>
+        </div>
+       </div>
+      </div>
+      <div class="glass-card p-8 rounded-lg neon-border">
+       <div class="space-y-6">
+        <div>
+         <div class="text-4xl font-bold neon-text mb-2">
+          150+
+         </div>
+         <div class="text-slate-400">
+          Artikel &amp; Tutorial
+         </div>
+        </div>
+        <div>
+         <div class="text-4xl font-bold neon-text mb-2">
+          50K+
+         </div>
+         <div class="text-slate-400">
+          Pembaca Aktif
+         </div>
+        </div>
+        <div>
+         <div class="text-4xl font-bold neon-text mb-2">
+          30+
+         </div>
+         <div class="text-slate-400">
+          Topik Pembahasan
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Topics Section -->
+   <section class="relative py-16 px-6 border-b border-cyan-500/10">
+    <div class="max-w-5xl mx-auto">
+     <div class="text-center mb-12">
+      <h2 class="text-3xl md:text-4xl font-bold mb-4 tracking-tight">Topik <span class="neon-text">Pembahasan</span></h2>
+      <p class="text-slate-400">Kami membahas berbagai aspek teknologi IT dan networking yang relevan dengan kebutuhan industri</p>
+     </div>
+     <div class="grid md:grid-cols-3 gap-6">
+      <div class="glass-card p-6 rounded-lg neon-border hover:scale-105 transition">
+       <div class="flex items-center gap-3 mb-4">
+        <i data-lucide="network" class="text-cyan-400" style="width:28px;height:28px;"></i>
+        <h3 class="font-bold text-lg">Networking</h3>
+       </div>
+       <p class="text-slate-400 text-sm">TCP/IP, routing, switching, network design, network security, dan best practices networking modern.</p>
+      </div>
+      <div class="glass-card p-6 rounded-lg neon-border hover:scale-105 transition">
+       <div class="flex items-center gap-3 mb-4">
+        <i data-lucide="server" class="text-cyan-400" style="width:28px;height:28px;"></i>
+        <h3 class="font-bold text-lg">Linux &amp; Server</h3>
+       </div>
+       <p class="text-slate-400 text-sm">Linux administration, shell scripting, server configuration, performance tuning, dan system optimization.</p>
+      </div>
+      <div class="glass-card p-6 rounded-lg neon-border hover:scale-105 transition">
+       <div class="flex items-center gap-3 mb-4">
+        <i data-lucide="zap" class="text-cyan-400" style="width:28px;height:28px;"></i>
+        <h3 class="font-bold text-lg">DevOps</h3>
+       </div>
+       <p class="text-slate-400 text-sm">Docker, Kubernetes, CI/CD, infrastructure as code, monitoring, dan automation best practices.</p>
+      </div>
+      <div class="glass-card p-6 rounded-lg neon-border hover:scale-105 transition">
+       <div class="flex items-center gap-3 mb-4">
+        <i data-lucide="shield" class="text-cyan-400" style="width:28px;height:28px;"></i>
+        <h3 class="font-bold text-lg">Cybersecurity</h3>
+       </div>
+       <p class="text-slate-400 text-sm">Network security, penetration testing, threat analysis, security architecture, dan incident response.</p>
+      </div>
+      <div class="glass-card p-6 rounded-lg neon-border hover:scale-105 transition">
+       <div class="flex items-center gap-3 mb-4">
+        <i data-lucide="cloud" class="text-cyan-400" style="width:28px;height:28px;"></i>
+        <h3 class="font-bold text-lg">Cloud Computing</h3>
+       </div>
+       <p class="text-slate-400 text-sm">AWS, GCP, Azure, cloud architecture, serverless, containerization, dan cloud-native applications.</p>
+      </div>
+      <div class="glass-card p-6 rounded-lg neon-border hover:scale-105 transition">
+       <div class="flex items-center gap-3 mb-4">
+        <i data-lucide="database" class="text-cyan-400" style="width:28px;height:28px;"></i>
+        <h3 class="font-bold text-lg">Database &amp; Storage</h3>
+       </div>
+       <p class="text-slate-400 text-sm">SQL, NoSQL, replication, backup strategies, data warehouse, dan high-performance data solutions.</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- Why Choose Us Section -->
+   <section class="relative py-16 px-6 border-b border-cyan-500/10">
+    <div class="max-w-5xl mx-auto">
+     <h2 class="text-3xl md:text-4xl font-bold mb-12 tracking-tight text-center">Mengapa <span class="neon-text">Memilih Firman Hidayatuloh</span>?</h2>
+     <div class="grid md:grid-cols-2 gap-8">
+      <div class="flex gap-4">
+       <div class="flex-shrink-0">
+        <i data-lucide="check" class="text-cyan-400 mt-1" style="width:24px;height:24px;"></i>
+       </div>
+       <div>
+        <h3 class="font-bold text-lg mb-2">Konten Terkurasi dengan Baik</h3>
+        <p class="text-slate-400">Setiap artikel melalui proses review ketat untuk memastikan akurasi dan relevansi dengan industri terkini.</p>
+       </div>
+      </div>
+      <div class="flex gap-4">
+       <div class="flex-shrink-0">
+        <i data-lucide="check" class="text-cyan-400 mt-1" style="width:24px;height:24px;"></i>
+       </div>
+       <div>
+        <h3 class="font-bold text-lg mb-2">Praktis &amp; Implementable</h3>
+        <p class="text-slate-400">Semua tutorial dilengkapi dengan contoh code, command, dan step-by-step guide yang bisa langsung dipraktikkan.</p>
+       </div>
+      </div>
+      <div class="flex gap-4">
+       <div class="flex-shrink-0">
+        <i data-lucide="check" class="text-cyan-400 mt-1" style="width:24px;height:24px;"></i>
+       </div>
+       <div>
+        <h3 class="font-bold text-lg mb-2">Diperbarui Secara Berkala</h3>
+        <p class="text-slate-400">Kami terus memperbarui konten dengan perkembangan teknologi terbaru dan feedback dari komunitas.</p>
+       </div>
+      </div>
+      <div class="flex gap-4">
+       <div class="flex-shrink-0">
+        <i data-lucide="check" class="text-cyan-400 mt-1" style="width:24px;height:24px;"></i>
+       </div>
+       <div>
+        <h3 class="font-bold text-lg mb-2">Komunitas yang Aktif</h3>
+        <p class="text-slate-400">Bergabunglah dengan ribuan developer dan IT professional yang saling berbagi knowledge dan experience.</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- CTA Section -->
+   <section class="relative py-20 px-6">
+    <div class="max-w-4xl mx-auto text-center">
+     <h2 class="text-3xl md:text-4xl font-bold mb-6 tracking-tight">Siap <span class="neon-text">Mulai Belajar</span>?</h2>
+     <p class="text-lg text-slate-300 mb-8 max-w-2xl mx-auto">Jelajahi artikel dan tutorial kami untuk meningkatkan skill teknologi Anda ke level berikutnya.</p>
+     <div class="flex flex-col sm:flex-row gap-4 justify-center"><a href="./" class="neon-btn px-8 py-3 rounded-lg font-mono text-sm font-bold uppercase tracking-wider inline-flex items-center justify-center gap-2 transition"> <i data-lucide="arrow-right" style="width:18px;height:18px;"></i> Baca Artikel </a> <button class="px-8 py-3 rounded-lg border border-cyan-500/50 text-cyan-300 hover:bg-cyan-500/10 font-mono text-sm font-bold uppercase tracking-wider transition"> Subscribe Newsletter </button>
+     </div>
+    </div>
+   </section>
+   <footer class="relative border-t border-cyan-500/20 pt-16 pb-8 px-6" style="background: #03050a;">
+    <div class="max-w-7xl mx-auto grid md:grid-cols-4 gap-10 mb-12">
+     <div class="md:col-span-1">
+      <div class="flex items-center gap-3 mb-4">
+       <div class="w-10 h-10 flex items-center justify-center rounded-lg neon-border" style="background: linear-gradient(135deg, #0f172a, #1e293b);">
+        <i data-lucide="network" class="text-cyan-400" style="width:22px;height:22px;"></i>
+       </div>
+       <div>
+        <div class="font-bold text-lg">
+         Firman Hidayatuloh
+        </div>
+        <div class="font-mono text-[10px] text-cyan-400/80 uppercase tracking-widest">
+         v2.5.0 · stable
+        </div>
+       </div>
+      </div>
+      <p class="text-slate-400 text-sm leading-relaxed">Portal teknologi IT dan jaringan komputer untuk developer, sysadmin, dan network engineer Indonesia.</p>
+     </div>
+     <div>
+      <h4 class="font-mono text-xs text-cyan-400 uppercase tracking-widest mb-4">Topics</h4>
+      <ul class="space-y-2 text-sm text-slate-400">
+       <li><a href="#" class="hover:text-cyan-300 transition">Networking</a></li>
+       <li><a href="#" class="hover:text-cyan-300 transition">Linux &amp; Server</a></li>
+       <li><a href="#" class="hover:text-cyan-300 transition">DevOps</a></li>
+       <li><a href="#" class="hover:text-cyan-300 transition">Cybersecurity</a></li>
+       <li><a href="#" class="hover:text-cyan-300 transition">Cloud Computing</a></li>
+      </ul>
+     </div>
+     <div>
+      <h4 class="font-mono text-xs text-cyan-400 uppercase tracking-widest mb-4">Resources</h4>
+      <ul class="space-y-2 text-sm text-slate-400">
+       <li><a href="#" class="hover:text-cyan-300 transition">Document</a></li>
+       <li><a href="#" class="hover:text-cyan-300 transition">Tutorials</a></li>
+       <li><a href="#" class="hover:text-cyan-300 transition">Community</a></li>
+       <li><a href="#" class="hover:text-cyan-300 transition">Changelog</a></li>
+       <li><a href="#" class="hover:text-cyan-300 transition">API Status</a></li>
+      </ul>
+     </div>
+     <div>
+      <h4 class="font-mono text-xs text-cyan-400 uppercase tracking-widest mb-4">Connect</h4>
+      <div class="flex gap-3 mb-6">
+       <a href="https://github.com/firmanhidayatuloh" class="w-10 h-10 rounded-lg flex items-center justify-center border border-cyan-500/30 hover:bg-cyan-500/10 transition text-cyan-400"><i data-lucide="github" style="width:18px;height:18px;"></i></a> <a href="#" class="w-10 h-10 rounded-lg flex items-center justify-center border border-cyan-500/30 hover:bg-cyan-500/10 transition text-cyan-400"><i data-lucide="twitter" style="width:18px;height:18px;"></i></a> <a href="#" class="w-10 h-10 rounded-lg flex items-center justify-center border border-cyan-500/30 hover:bg-cyan-500/10 transition text-cyan-400"><i data-lucide="linkedin" style="width:18px;height:18px;"></i></a> <a href="#" class="w-10 h-10 rounded-lg flex items-center justify-center border border-cyan-500/30 hover:bg-cyan-500/10 transition text-cyan-400"><i data-lucide="youtube" style="width:18px;height:18px;"></i></a>
+      </div>
+      <div class="font-mono text-xs text-slate-500">
+       <div class="flex items-center gap-2 mb-1">
+        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 blink"></span> All systems operational
+       </div>
+       <div>
+        Ping: 12ms · Uptime: 99.98%
+       </div>
+      </div>
+     </div>
+    </div>
+    <div class="pt-6 border-t border-cyan-500/10 flex flex-wrap items-center justify-between gap-4 font-mono text-xs text-slate-500">
+     <div>
+      © 2025 Firman Hidayatuloh Tech Insights. All systems reserved.
+     </div>
+     <div class="flex gap-6"><a href="#" class="hover:text-cyan-300 transition">Privacy</a> <a href="#" class="hover:text-cyan-300 transition">Terms</a> <a href="#" class="hover:text-cyan-300 transition">Cookies</a> <a href="#" class="hover:text-cyan-300 transition">Contact</a>
+     </div>
+    </div>
+   </footer>
+  </div>
+  <script>
+  lucide.createIcons();
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9f17112c20466ca8',t:'MTc3NzA1NDI1MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

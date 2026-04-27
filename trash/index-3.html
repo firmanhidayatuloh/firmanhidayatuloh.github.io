@@ -1,0 +1,592 @@
+<!doctype html>
+<html lang="id" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NetCore — Tech &amp; Network Insights</title>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&amp;family=Space+Grotesk:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+  <style>
+  html, body { height: 100%; width: 100%; }
+  body {
+    font-family: 'Space Grotesk', sans-serif;
+    background: #05070d;
+    color: #e6f1ff;
+  }
+  .font-mono { font-family: 'JetBrains Mono', monospace; }
+
+  /* Circuit grid background */
+  .circuit-bg {
+    background-color: #05070d;
+    background-image:
+      linear-gradient(rgba(34, 211, 238, 0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(34, 211, 238, 0.06) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+  .circuit-bg::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 20% 20%, rgba(34, 211, 238, 0.15), transparent 40%),
+      radial-gradient(circle at 80% 10%, rgba(59, 130, 246, 0.2), transparent 50%),
+      radial-gradient(circle at 50% 90%, rgba(34, 211, 238, 0.1), transparent 50%);
+    pointer-events: none;
+  }
+
+  .neon-text { color: #22d3ee; text-shadow: 0 0 12px rgba(34, 211, 238, 0.5); }
+  .neon-border { box-shadow: 0 0 0 1px rgba(34, 211, 238, 0.4), 0 0 24px rgba(34, 211, 238, 0.15); }
+  .neon-btn {
+    background: linear-gradient(135deg, #22d3ee, #0891b2);
+    color: #05070d;
+    box-shadow: 0 0 24px rgba(34, 211, 238, 0.4);
+    transition: all 0.3s;
+  }
+  .neon-btn:hover {
+    box-shadow: 0 0 40px rgba(34, 211, 238, 0.7);
+    transform: translateY(-2px);
+  }
+
+  .glass-card {
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.8), rgba(2, 6, 23, 0.9));
+    border: 1px solid rgba(34, 211, 238, 0.15);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s;
+  }
+  .glass-card:hover {
+    border-color: rgba(34, 211, 238, 0.5);
+    transform: translateY(-4px);
+    box-shadow: 0 10px 40px rgba(34, 211, 238, 0.15);
+  }
+
+  .skill-card {
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.6), rgba(2, 6, 23, 0.8));
+    border: 1px solid rgba(34, 211, 238, 0.2);
+    backdrop-filter: blur(8px);
+    transition: all 0.3s;
+    cursor: pointer;
+  }
+  .skill-card:hover {
+    border-color: rgba(34, 211, 238, 0.6);
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(2, 6, 23, 0.95));
+    box-shadow: 0 8px 32px rgba(34, 211, 238, 0.2);
+    transform: translateY(-2px);
+  }
+
+  /* Server rack visual */
+  .server-rack {
+    background: linear-gradient(180deg, #0a0f1c 0%, #050810 100%);
+    border: 1px solid rgba(34, 211, 238, 0.25);
+    border-radius: 8px;
+    padding: 10px;
+    position: relative;
+    overflow: hidden;
+  }
+  .server-unit {
+    background: linear-gradient(90deg, #0f172a, #1e293b);
+    border: 1px solid rgba(34, 211, 238, 0.15);
+    border-radius: 4px;
+    padding: 8px 12px;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .server-led {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: #22d3ee;
+    box-shadow: 0 0 8px #22d3ee;
+    animation: pulse-led 1.5s infinite;
+  }
+  .server-led.amber { background: #fbbf24; box-shadow: 0 0 8px #fbbf24; animation-delay: 0.3s; }
+  .server-led.red { background: #ef4444; box-shadow: 0 0 8px #ef4444; animation-delay: 0.7s; }
+  .server-bar {
+    flex: 1; height: 3px; background: rgba(34, 211, 238, 0.1); border-radius: 2px; overflow: hidden; position: relative;
+  }
+  .server-bar::after {
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(90deg, transparent, #22d3ee, transparent);
+    animation: scan 2s infinite linear;
+  }
+  @keyframes scan { 0% { transform: translateX(-100%);} 100% { transform: translateX(100%);} }
+  @keyframes pulse-led { 0%,100% { opacity: 1;} 50% { opacity: 0.3;} }
+
+  /* Animated circuit lines */
+  .circuit-line {
+    stroke-dasharray: 4 4;
+    animation: dash 20s linear infinite;
+  }
+  @keyframes dash { to { stroke-dashoffset: -200; } }
+
+  .tag-pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 10px;
+    background: rgba(34, 211, 238, 0.1);
+    border: 1px solid rgba(34, 211, 238, 0.3);
+    color: #22d3ee;
+    border-radius: 999px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* Scanline effect on hero */
+  .hero-scanline::after {
+    content: "";
+    position: absolute; inset: 0;
+    background: linear-gradient(transparent 50%, rgba(34, 211, 238, 0.02) 50%);
+    background-size: 100% 4px;
+    pointer-events: none;
+  }
+
+  .blink { animation: blink 1s infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  .stat-number {
+    font-family: 'JetBrains Mono', monospace;
+    background: linear-gradient(135deg, #22d3ee, #67e8f9);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .nav-link { position: relative; transition: color 0.2s; }
+  .nav-link::after {
+    content: ""; position: absolute; left: 0; bottom: -4px;
+    width: 0; height: 2px; background: #22d3ee;
+    transition: width 0.3s; box-shadow: 0 0 8px #22d3ee;
+  }
+  .nav-link:hover::after { width: 100%; }
+  .nav-link:hover { color: #22d3ee; }
+
+  ::-webkit-scrollbar { width: 10px; }
+  ::-webkit-scrollbar-track { background: #05070d; }
+  ::-webkit-scrollbar-thumb { background: rgba(34, 211, 238, 0.3); border-radius: 5px; }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(34, 211, 238, 0.6); }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full w-full overflow-auto">
+  <div class="w-full min-h-full">
+   <!-- HEADER / NAV -->
+   <header class="sticky top-0 z-50 backdrop-blur-lg border-b border-cyan-500/20" style="background: rgba(5, 7, 13, 0.85);">
+    <nav class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+     <div class="flex items-center gap-3">
+      <div class="relative w-10 h-10 flex items-center justify-center rounded-lg neon-border" style="background: linear-gradient(135deg, #0f172a, #1e293b);">
+       <i data-lucide="network" class="text-cyan-400" style="width:22px;height:22px;"></i>
+      </div>
+      <div>
+       <div id="site-name" class="font-bold text-lg tracking-tight">
+        NetCore
+       </div>
+       <div id="site-tagline" class="font-mono text-[10px] text-cyan-400/80 uppercase tracking-widest">
+        Tech &amp; Network Insights
+       </div>
+      </div>
+     </div>
+     <ul class="hidden md:flex items-center gap-8 font-mono text-sm">
+      <li><a href="#home" class="nav-link text-slate-300">// home</a></li>
+      <li><a href="#portfolio" class="nav-link text-slate-300">// about</a></li>
+      <li><a id="artikel-link" href="http://localhost/pages/gitlab/artikel/" class="nav-link text-slate-300">// artikel</a></li>
+     </ul><button class="neon-btn px-5 py-2 rounded-lg font-mono text-sm font-bold uppercase tracking-wider"> Connect </button>
+    </nav>
+   </header><!-- HERO / FEATURED HEADLINE -->
+   <section id="home" class="circuit-bg relative overflow-hidden hero-scanline">
+    <!-- animated circuit svg -->
+    <svg class="absolute inset-0 w-full h-full opacity-40" preserveaspectratio="none" viewbox="0 0 1200 600">
+     <g stroke="#22d3ee" stroke-width="1" fill="none">
+      <path class="circuit-line" d="M0,100 L300,100 L300,200 L600,200 L600,50 L1200,50" />
+      <path class="circuit-line" d="M0,450 L200,450 L200,350 L500,350 L500,500 L900,500 L900,400 L1200,400" />
+      <path class="circuit-line" d="M150,0 L150,150 L400,150 L400,300 L700,300 L700,600" />
+      <path class="circuit-line" d="M1100,0 L1100,250 L850,250 L850,600" />
+     </g> <g fill="#22d3ee">
+      <circle cx="300" cy="200" r="3" />
+      <circle cx="600" cy="50" r="3" />
+      <circle cx="200" cy="350" r="3" />
+      <circle cx="500" cy="500" r="3" />
+      <circle cx="700" cy="300" r="3" />
+      <circle cx="850" cy="250" r="3" />
+     </g>
+    </svg>
+    <div class="relative max-w-7xl mx-auto px-6 py-16 md:py-24 grid md:grid-cols-12 gap-10 items-center">
+     <div class="md:col-span-7">
+      <div class="flex items-center gap-3 mb-5">
+       <span class="tag-pill"><span class="w-1.5 h-1.5 rounded-full bg-cyan-400 blink"></span><span id="featured-category">HEADLINE</span></span> <span class="font-mono text-xs text-slate-400">SYS.LOG // <span id="post-date">2025-01-15</span></span>
+      </div>
+      <h1 id="featured-title" class="text-4xl md:text-6xl font-bold leading-tight mb-5 tracking-tight">Masa Depan <span class="neon-text">Infrastruktur Jaringan</span> Dimulai di Server Linux</h1>
+      <p id="featured-excerpt" class="text-lg text-slate-300 leading-relaxed mb-8 max-w-2xl">Dari edge computing hingga orkestrasi kontainer, ekosistem Linux terus mendominasi tulang punggung internet modern. Temukan insight terbaru seputar network engineering dan dev tools.</p>
+      <div class="flex flex-wrap gap-4">
+       <a href="#portfolio" class="neon-btn px-6 py-3 rounded-lg font-mono text-sm font-bold uppercase tracking-wider inline-flex items-center gap-2"> View Portfolio <i data-lucide="arrow-right" style="width:16px;height:16px;"></i> </a> <a href="#popular" class="px-6 py-3 rounded-lg font-mono text-sm font-bold uppercase tracking-wider border border-cyan-500/40 text-cyan-300 hover:bg-cyan-500/10 transition inline-flex items-center gap-2"> <i data-lucide="layers" style="width:16px;height:16px;"></i> Browse Topics </a>
+      </div>
+      <div class="grid grid-cols-3 gap-6 mt-12 max-w-lg">
+       <div>
+        <div class="stat-number text-3xl font-bold">
+         99.9%
+        </div>
+        <div class="font-mono text-xs text-slate-400 uppercase tracking-wider mt-1">
+         Uptime
+        </div>
+       </div>
+       <div>
+        <div class="stat-number text-3xl font-bold">
+         2.4K
+        </div>
+        <div class="font-mono text-xs text-slate-400 uppercase tracking-wider mt-1">
+         Articles
+        </div>
+       </div>
+       <div>
+        <div class="stat-number text-3xl font-bold">
+         180+
+        </div>
+        <div class="font-mono text-xs text-slate-400 uppercase tracking-wider mt-1">
+         Nodes
+        </div>
+       </div>
+      </div>
+     </div><!-- Server Rack visual -->
+     <div class="md:col-span-5">
+      <div class="server-rack neon-border">
+       <div class="flex items-center justify-between mb-3 px-1">
+        <div class="flex items-center gap-2">
+         <i data-lucide="server" class="text-cyan-400" style="width:16px;height:16px;"></i> <span class="font-mono text-xs text-cyan-300 uppercase tracking-wider">rack-01 // live</span>
+        </div><span class="font-mono text-[10px] text-slate-500">DC-JKT-EAST</span>
+       </div>
+       <div class="server-unit">
+        <span class="server-led"></span> <span class="font-mono text-xs text-slate-300">web-01</span>
+        <div class="server-bar"></div><span class="font-mono text-[10px] text-cyan-400">42%</span>
+       </div>
+       <div class="server-unit">
+        <span class="server-led amber"></span> <span class="font-mono text-xs text-slate-300">db-primary</span>
+        <div class="server-bar"></div><span class="font-mono text-[10px] text-cyan-400">68%</span>
+       </div>
+       <div class="server-unit">
+        <span class="server-led"></span> <span class="font-mono text-xs text-slate-300">cache-redis</span>
+        <div class="server-bar"></div><span class="font-mono text-[10px] text-cyan-400">23%</span>
+       </div>
+       <div class="server-unit">
+        <span class="server-led"></span> <span class="font-mono text-xs text-slate-300">proxy-nginx</span>
+        <div class="server-bar"></div><span class="font-mono text-[10px] text-cyan-400">55%</span>
+       </div>
+       <div class="server-unit">
+        <span class="server-led red"></span> <span class="font-mono text-xs text-slate-300">worker-k8s</span>
+        <div class="server-bar"></div><span class="font-mono text-[10px] text-cyan-400">89%</span>
+       </div>
+       <div class="server-unit">
+        <span class="server-led"></span> <span class="font-mono text-xs text-slate-300">backup-nfs</span>
+        <div class="server-bar"></div><span class="font-mono text-[10px] text-cyan-400">31%</span>
+       </div>
+       <div class="mt-3 pt-3 border-t border-cyan-500/20 flex items-center justify-between font-mono text-[10px] text-slate-500">
+        <span>$ systemctl status<span class="blink text-cyan-400">_</span></span> <span class="text-emerald-400">● ALL SYSTEMS NOMINAL</span>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- PORTFOLIO SECTION -->
+   <section id="portfolio" class="relative py-20 px-6">
+    <div class="max-w-4xl mx-auto">
+     <div class="flex items-center gap-3 mb-8">
+      <span class="tag-pill"><i data-lucide="user" style="width:12px;height:12px;"></i> ABOUT ME</span> <span class="tag-pill"><i data-lucide="briefcase" style="width:12px;height:12px;"></i> PORTFOLIO</span>
+     </div><!-- Profile Card -->
+     <div class="glass-card neon-border rounded-2xl p-10 mb-12">
+      <div class="flex flex-col md:flex-row gap-8 items-start">
+       <div class="w-32 h-32 flex-shrink-0 rounded-xl neon-border overflow-hidden" style="background: linear-gradient(135deg, #0f172a, #1e293b);"><img src="https://content.rootsec1337.org/image/2026/04/398e32c6bcf41377.jpg" alt="Profile" loading="lazy" class="w-full h-full object-cover" onerror="console.error('Image failed to load:', this.src); this.style.background='#1e293b'; this.alt='Image unavailable';">
+       </div>
+       <div class="flex-1">
+        <h1 id="portfolio-name" class="text-3xl md:text-4xl font-bold mb-2">Your Name</h1>
+        <h2 id="portfolio-title" class="text-xl text-cyan-400 font-mono mb-4">Senior Developer &amp; Tech Enthusiast</h2>
+        <p id="portfolio-bio" class="text-slate-300 leading-relaxed mb-8 max-w-2xl">Passionate about building scalable systems, sharing knowledge, and contributing to the tech community. Experienced in full-stack development, DevOps, and cloud infrastructure.</p>
+       </div>
+      </div>
+     </div>
+     <div class="glass-card neon-border rounded-2xl p-10">
+      <div class="flex items-center gap-3 mb-8">
+       <span class="tag-pill"><i data-lucide="zap" style="width:12px;height:12px;"></i> EXPERTISE</span>
+      </div>
+      <h2 class="text-3xl md:text-4xl font-bold mb-2 tracking-tight">Skill Apa Yang Saya <span class="neon-text">Kuasai ?</span></h2>
+      <p class="text-slate-400 mt-2 mb-8">Berikut adalah bidang keahlian yang telah saya kembangkan dan praktikkan dalam industri teknologi.</p>
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+       <!-- Komputer -->
+       <div class="skill-card rounded-xl p-8">
+        <div class="flex items-start justify-between mb-6">
+         <div class="w-14 h-14 flex items-center justify-center rounded-lg neon-border flex-shrink-0" style="background: linear-gradient(135deg, #0f172a, #1e293b);">
+          <i data-lucide="cpu" class="text-cyan-400" style="width:28px;height:28px;"></i>
+         </div><span class="font-mono text-xs text-slate-500">01</span>
+        </div>
+        <h3 class="font-bold text-xl mb-2">Komputer</h3>
+        <p class="text-xs text-cyan-400 font-mono mb-4 uppercase tracking-wider">HARDWARE &amp; PERANGKAT</p>
+        <p class="text-sm text-slate-300 leading-relaxed mb-4">Pemahaman mendalam tentang arsitektur hardware, troubleshooting perangkat, optimasi performa sistem, dan maintenance komputer desktop maupun server.</p>
+       </div><!-- Jaringan -->
+       <div class="skill-card rounded-xl p-8">
+        <div class="flex items-start justify-between mb-6">
+         <div class="w-14 h-14 flex items-center justify-center rounded-lg neon-border flex-shrink-0" style="background: linear-gradient(135deg, #0f172a, #1e293b);">
+          <i data-lucide="wifi" class="text-cyan-400" style="width:28px;height:28px;"></i>
+         </div><span class="font-mono text-xs text-slate-500">02</span>
+        </div>
+        <h3 class="font-bold text-xl mb-2">Jaringan</h3>
+        <p class="text-xs text-cyan-400 font-mono mb-4 uppercase tracking-wider">NETWORKING &amp; INFRASTRUCTURE</p>
+        <p class="text-sm text-slate-300 leading-relaxed mb-4">Konfigurasi routing, switching, VPN, firewall, network monitoring, dan design infrastruktur jaringan skala enterprise dengan high availability.</p>
+       </div><!-- Software -->
+       <div class="skill-card rounded-xl p-8">
+        <div class="flex items-start justify-between mb-6">
+         <div class="w-14 h-14 flex items-center justify-center rounded-lg neon-border flex-shrink-0" style="background: linear-gradient(135deg, #0f172a, #1e293b);">
+          <i data-lucide="code" class="text-cyan-400" style="width:28px;height:28px;"></i>
+         </div><span class="font-mono text-xs text-slate-500">03</span>
+        </div>
+        <h3 class="font-bold text-xl mb-2">Software</h3>
+        <p class="text-xs text-cyan-400 font-mono mb-4 uppercase tracking-wider">DEVELOPMENT &amp; TOOLS</p>
+        <p class="text-sm text-slate-300 leading-relaxed mb-4">Pengembangan aplikasi full-stack, scripting, version control, CI/CD automation, containerization dengan Docker dan orchestration kubernetes.</p>
+       </div><!-- SEO -->
+       <div class="skill-card rounded-xl p-8">
+        <div class="flex items-start justify-between mb-6">
+         <div class="w-14 h-14 flex items-center justify-center rounded-lg neon-border flex-shrink-0" style="background: linear-gradient(135deg, #0f172a, #1e293b);">
+          <i data-lucide="search" class="text-cyan-400" style="width:28px;height:28px;"></i>
+         </div><span class="font-mono text-xs text-slate-500">04</span>
+        </div>
+        <h3 class="font-bold text-xl mb-2">SEO</h3>
+        <p class="text-xs text-cyan-400 font-mono mb-4 uppercase tracking-wider">SEARCH OPTIMIZATION</p>
+        <p class="text-sm text-slate-300 leading-relaxed mb-4">Optimasi on-page &amp; off-page, keyword research, technical SEO, analytics implementation, dan strategi content marketing untuk visibility maksimal.</p>
+       </div><!-- Blogger -->
+       <div class="skill-card rounded-xl p-8">
+        <div class="flex items-start justify-between mb-6">
+         <div class="w-14 h-14 flex items-center justify-center rounded-lg neon-border flex-shrink-0" style="background: linear-gradient(135deg, #0f172a, #1e293b);">
+          <i data-lucide="pen-tool" class="text-cyan-400" style="width:28px;height:28px;"></i>
+         </div><span class="font-mono text-xs text-slate-500">05</span>
+        </div>
+        <h3 class="font-bold text-xl mb-2">Blogger</h3>
+        <p class="text-xs text-cyan-400 font-mono mb-4 uppercase tracking-wider">CONTENT &amp; WRITING</p>
+        <p class="text-sm text-slate-300 leading-relaxed mb-4">Penulisan artikel teknis berkualitas tinggi, content strategy, documentation, storytelling yang engaging, dan distribution across multiple platforms.</p>
+       </div><!-- Cybersecurity -->
+       <div class="skill-card rounded-xl p-8">
+        <div class="flex items-start justify-between mb-6">
+         <div class="w-14 h-14 flex items-center justify-center rounded-lg neon-border flex-shrink-0" style="background: linear-gradient(135deg, #0f172a, #1e293b);">
+          <i data-lucide="shield" class="text-cyan-400" style="width:28px;height:28px;"></i>
+         </div><span class="font-mono text-xs text-slate-500">06</span>
+        </div>
+        <h3 class="font-bold text-xl mb-2">Cybersecurity</h3>
+        <p class="text-xs text-cyan-400 font-mono mb-4 uppercase tracking-wider">SECURITY &amp; DEFENSE</p>
+        <p class="text-sm text-slate-300 leading-relaxed mb-4">Penetration testing, vulnerability assessment, security hardening, incident response, compliance framework implementation dan security best practices.</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- POPULAR ARTICLES -->
+   <section id="popular" class="relative py-20 px-6 border-t border-cyan-500/10" style="background: linear-gradient(180deg, #05070d, #080c18);">
+    <div class="max-w-7xl mx-auto">
+     <div class="flex items-end justify-between flex-wrap gap-4 mb-10">
+      <div>
+       <div class="tag-pill mb-3"><i data-lucide="flame" style="width:12px;height:12px;"></i> TRENDING NOW
+       </div>
+       <h2 class="text-3xl md:text-4xl font-bold tracking-tight">Artikel <span class="neon-text">Populer</span></h2>
+       <p class="text-slate-400 mt-2">Paling banyak dibaca minggu ini oleh network engineer dan developer.</p>
+      </div><a href="http://localhost/pages/gitlab/artikel/" target="_blank" rel="noopener noreferrer" class="font-mono text-sm text-cyan-400 hover:text-cyan-300 inline-flex items-center gap-2"> view all <i data-lucide="arrow-right" style="width:14px;height:14px;"></i> </a>
+     </div>
+     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6" id="popular-grid"></div>
+    </div>
+   </section><!-- NEWSLETTER -->
+   <section class="relative py-16 px-6">
+    <div class="max-w-4xl mx-auto glass-card neon-border rounded-2xl p-10 text-center relative overflow-hidden">
+     <div class="absolute top-0 right-0 opacity-20">
+      <i data-lucide="radio-tower" class="text-cyan-400" style="width:120px;height:120px;"></i>
+     </div>
+     <div class="relative">
+      <div class="tag-pill mb-4"><span class="w-1.5 h-1.5 rounded-full bg-cyan-400 blink"></span> SIGNAL ACQUIRED
+      </div>
+      <h3 class="text-3xl font-bold mb-3">Subscribe ke <span class="neon-text">Newsletter</span> Kami</h3>
+      <p class="text-slate-400 mb-6 max-w-xl mx-auto">Dapatkan insight terbaru seputar networking, DevOps, dan tech trends langsung ke inbox Anda setiap minggu.</p>
+      <form id="newsletter-form" class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+       <label for="email-input" class="sr-only">Email</label> <input id="email-input" type="email" required placeholder="root@yourdomain.com" class="flex-1 px-4 py-3 rounded-lg bg-slate-900/80 border border-cyan-500/30 text-slate-200 font-mono text-sm placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/30"> <button type="submit" class="neon-btn px-6 py-3 rounded-lg font-mono text-sm font-bold uppercase tracking-wider"> Connect </button>
+      </form>
+      <div id="newsletter-msg" class="mt-4 font-mono text-sm text-emerald-400 hidden">
+       ● Connection established. Welcome aboard!
+      </div>
+     </div>
+    </div>
+   </section><!-- FOOTER -->
+   <footer class="relative border-t border-cyan-500/20 pt-16 pb-8 px-6" style="background: #03050a;">
+    <div class="max-w-7xl mx-auto grid md:grid-cols-4 gap-10 mb-12">
+     <div class="md:col-span-1">
+      <div class="flex items-center gap-3 mb-4">
+       <div class="w-10 h-10 flex items-center justify-center rounded-lg neon-border" style="background: linear-gradient(135deg, #0f172a, #1e293b);">
+        <i data-lucide="network" class="text-cyan-400" style="width:22px;height:22px;"></i>
+       </div>
+       <div>
+        <div class="font-bold text-lg">
+         NetCore
+        </div>
+        <div class="font-mono text-[10px] text-cyan-400/80 uppercase tracking-widest">
+         v2.5.0 · stable
+        </div>
+       </div>
+      </div>
+      <p class="text-slate-400 text-sm leading-relaxed">Portal teknologi IT dan jaringan komputer untuk developer, sysadmin, dan network engineer Indonesia.</p>
+     </div>
+     <div>
+      <h4 class="font-mono text-xs text-cyan-400 uppercase tracking-widest mb-4">// Topics</h4>
+      <ul class="space-y-2 text-sm text-slate-400">
+       <li><a href="#" class="hover:text-cyan-300 transition">Networking</a></li>
+       <li><a href="#" class="hover:text-cyan-300 transition">Linux &amp; Server</a></li>
+       <li><a href="#" class="hover:text-cyan-300 transition">DevOps</a></li>
+       <li><a href="#" class="hover:text-cyan-300 transition">Cybersecurity</a></li>
+       <li><a href="#" class="hover:text-cyan-300 transition">Cloud Computing</a></li>
+      </ul>
+     </div>
+     <div>
+      <h4 class="font-mono text-xs text-cyan-400 uppercase tracking-widest mb-4">// Resources</h4>
+      <ul class="space-y-2 text-sm text-slate-400">
+       <li><a href="#" class="hover:text-cyan-300 transition">Documentation</a></li>
+       <li><a href="#" class="hover:text-cyan-300 transition">Tutorials</a></li>
+       <li><a href="#" class="hover:text-cyan-300 transition">Community</a></li>
+       <li><a href="#" class="hover:text-cyan-300 transition">Changelog</a></li>
+       <li><a href="#" class="hover:text-cyan-300 transition">API Status</a></li>
+      </ul>
+     </div>
+     <div>
+      <h4 class="font-mono text-xs text-cyan-400 uppercase tracking-widest mb-4">// Connect</h4>
+      <div class="flex gap-3 mb-6">
+       <a href="#" class="w-10 h-10 rounded-lg flex items-center justify-center border border-cyan-500/30 hover:bg-cyan-500/10 transition text-cyan-400"><i data-lucide="github" style="width:18px;height:18px;"></i></a> <a href="#" class="w-10 h-10 rounded-lg flex items-center justify-center border border-cyan-500/30 hover:bg-cyan-500/10 transition text-cyan-400"><i data-lucide="twitter" style="width:18px;height:18px;"></i></a> <a href="#" class="w-10 h-10 rounded-lg flex items-center justify-center border border-cyan-500/30 hover:bg-cyan-500/10 transition text-cyan-400"><i data-lucide="linkedin" style="width:18px;height:18px;"></i></a> <a href="#" class="w-10 h-10 rounded-lg flex items-center justify-center border border-cyan-500/30 hover:bg-cyan-500/10 transition text-cyan-400"><i data-lucide="youtube" style="width:18px;height:18px;"></i></a>
+      </div>
+      <div class="font-mono text-xs text-slate-500">
+       <div class="flex items-center gap-2 mb-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400 blink"></span> All systems operational
+       </div>
+       <div>
+        Ping: 12ms · Uptime: 99.98%
+       </div>
+      </div>
+     </div>
+    </div>
+    <div class="pt-6 border-t border-cyan-500/10 flex flex-wrap items-center justify-between gap-4 font-mono text-xs text-slate-500">
+     <div id="footer-text">
+      © 2025 NetCore Tech Insights. All systems reserved.
+     </div>
+     <div class="flex gap-6">
+      <a href="#" class="hover:text-cyan-300 transition">Privacy</a> <a href="#" class="hover:text-cyan-300 transition">Terms</a> <a href="#" class="hover:text-cyan-300 transition">Cookies</a> <a href="#" class="hover:text-cyan-300 transition">Contact</a>
+     </div>
+    </div>
+   </footer>
+  </div>
+  <script>
+  // Popular articles data
+  const popularArticles = [
+    { icon: 'server', tag: 'INFRASTRUCTURE', title: 'Membangun High Availability Cluster dengan Kubernetes', excerpt: 'Panduan step-by-step menyiapkan cluster K8s production-ready dengan HAProxy dan keepalived.', time: '12 min', reads: '24.3K' },
+    { icon: 'shield', tag: 'SECURITY', title: 'Hardening SSH: 10 Konfigurasi Wajib untuk Server Produksi', excerpt: 'Cara melindungi akses SSH dari brute force dengan fail2ban, key-based auth, dan port knocking.', time: '7 min', reads: '18.7K' },
+    { icon: 'cpu', tag: 'DEVOPS', title: 'CI/CD Pipeline Modern dengan GitLab Runner + Docker', excerpt: 'Otomatisasi deploy aplikasi Node.js dari git push hingga production dalam hitungan menit.', time: '10 min', reads: '15.2K' },
+    { icon: 'wifi', tag: 'NETWORKING', title: 'Memahami BGP Routing untuk Network Engineer Pemula', excerpt: 'Konsep AS, peering, dan route advertisement yang menjadi fondasi internet global.', time: '15 min', reads: '12.9K' },
+    { icon: 'database', tag: 'DATABASE', title: 'Optimasi PostgreSQL: Indexing Strategy untuk Query Lambat', excerpt: 'Teknik B-tree, GIN, dan partial index untuk mempercepat query 10x lipat.', time: '9 min', reads: '11.4K' },
+    { icon: 'cloud', tag: 'CLOUD', title: 'Migrasi On-Premise ke AWS: Pengalaman Real Dunia', excerpt: 'Case study migrasi 50TB data dan 120 service tanpa downtime menggunakan DMS.', time: '14 min', reads: '9.8K' }
+  ];
+
+  function renderPopular() {
+    const grid = document.getElementById('popular-grid');
+    grid.innerHTML = popularArticles.map((a, i) => `
+      <article class="glass-card rounded-xl p-6 group cursor-pointer">
+        <div class="flex items-start justify-between mb-4">
+          <div class="w-12 h-12 rounded-lg flex items-center justify-center neon-border" style="background: linear-gradient(135deg, #0f172a, #1e293b);">
+            <i data-lucide="${a.icon}" class="text-cyan-400" style="width:22px;height:22px;"></i>
+          </div>
+          <span class="font-mono text-xs text-slate-500">0${i+1}</span>
+        </div>
+        <span class="tag-pill mb-3">${a.tag}</span>
+        <h3 class="text-lg font-bold mt-3 mb-2 leading-snug group-hover:text-cyan-300 transition">${a.title}</h3>
+        <p class="text-sm text-slate-400 leading-relaxed mb-4">${a.excerpt}</p>
+        <div class="flex items-center justify-between pt-4 border-t border-cyan-500/10 font-mono text-xs text-slate-500">
+          <span class="inline-flex items-center gap-1.5"><i data-lucide="clock" style="width:12px;height:12px;"></i> ${a.time}</span>
+          <span class="inline-flex items-center gap-1.5"><i data-lucide="eye" style="width:12px;height:12px;"></i> ${a.reads}</span>
+          <span class="text-cyan-400 group-hover:translate-x-1 transition inline-flex items-center gap-1">read <i data-lucide="arrow-right" style="width:12px;height:12px;"></i></span>
+        </div>
+      </article>
+    `).join('');
+    lucide.createIcons();
+  }
+  renderPopular();
+  lucide.createIcons();
+
+  // Newsletter form
+  document.getElementById('newsletter-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const msg = document.getElementById('newsletter-msg');
+    msg.classList.remove('hidden');
+    document.getElementById('email-input').value = '';
+    setTimeout(() => msg.classList.add('hidden'), 4000);
+  });
+
+  // ============ ELEMENT SDK ============
+  const defaultConfig = {
+    site_name: 'NetCore',
+    site_tagline: 'Tech & Network Insights',
+    featured_category: 'HEADLINE · EXCLUSIVE',
+    featured_title: 'Masa Depan Infrastruktur Jaringan Dimulai di Server Linux',
+    featured_excerpt: 'Dari edge computing hingga orkestrasi kontainer, ekosistem Linux terus mendominasi tulang punggung internet modern. Temukan insight terbaru seputar network engineering dan dev tools.',
+    portfolio_name: 'Your Full Name',
+    portfolio_title: 'Senior Developer & Tech Enthusiast',
+    portfolio_bio: 'Passionate about building scalable systems, sharing knowledge, and contributing to the tech community. Experienced in full-stack development, DevOps, and cloud infrastructure.',
+    articles_link: 'http://localhost/pages/gitlab/artikel/',
+    footer_text: '© 2025 NetCore Tech Insights. All systems reserved.',
+    bg_color: '#05070d',
+    surface_color: '#0f172a',
+    text_color: '#e6f1ff',
+    primary_color: '#22d3ee',
+    secondary_color: '#1e293b',
+    font_family: 'Space Grotesk',
+    font_size: 16
+  };
+
+  function applyConfig(config) {
+    const get = (k) => config[k] ?? defaultConfig[k];
+
+    document.getElementById('site-name').textContent = get('site_name');
+    document.getElementById('site-tagline').textContent = get('site_tagline');
+    document.getElementById('featured-category').textContent = get('featured_category');
+    document.getElementById('featured-title').innerHTML = get('featured_title').replace(/Linux|Jaringan/gi, m => `<span class="neon-text">${m}</span>`);
+    document.getElementById('featured-excerpt').textContent = get('featured_excerpt');
+    
+    document.getElementById('portfolio-name').textContent = get('portfolio_name');
+    document.getElementById('portfolio-title').textContent = get('portfolio_title');
+    document.getElementById('portfolio-bio').textContent = get('portfolio_bio');
+    
+    document.getElementById('footer-text').textContent = get('footer_text');
+
+    document.body.style.backgroundColor = get('bg_color');
+    document.body.style.color = get('text_color');
+    const font = get('font_family');
+    document.body.style.fontFamily = `'${font}', 'Space Grotesk', sans-serif`;
+    document.body.style.fontSize = get('font_size') + 'px';
+  }
+
+  if (window.elementSdk) {
+    window.elementSdk.init({
+      defaultConfig,
+      onConfigChange: async (config) => applyConfig(config),
+      mapToCapabilities: (config) => ({
+        recolorables: [
+          { get: () => config.bg_color ?? defaultConfig.bg_color, set: (v) => { config.bg_color = v; window.elementSdk.setConfig({ bg_color: v }); } },
+          { get: () => config.surface_color ?? defaultConfig.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+          { get: () => config.text_color ?? defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+          { get: () => config.primary_color ?? defaultConfig.primary_color, set: (v) => { config.primary_color = v; window.elementSdk.setConfig({ primary_color: v }); } },
+          { get: () => config.secondary_color ?? defaultConfig.secondary_color, set: (v) => { config.secondary_color = v; window.elementSdk.setConfig({ secondary_color: v }); } }
+        ],
+        borderables: [],
+        fontEditable: { get: () => config.font_family ?? defaultConfig.font_family, set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); } },
+        fontSizeable: { get: () => config.font_size ?? defaultConfig.font_size, set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); } }
+      }),
+      mapToEditPanelValues: (config) => new Map([
+        ['site_name', config.site_name ?? defaultConfig.site_name],
+        ['site_tagline', config.site_tagline ?? defaultConfig.site_tagline],
+        ['featured_category', config.featured_category ?? defaultConfig.featured_category],
+        ['featured_title', config.featured_title ?? defaultConfig.featured_title],
+        ['featured_excerpt', config.featured_excerpt ?? defaultConfig.featured_excerpt],
+        ['portfolio_name', config.portfolio_name ?? defaultConfig.portfolio_name],
+        ['portfolio_title', config.portfolio_title ?? defaultConfig.portfolio_title],
+        ['portfolio_bio', config.portfolio_bio ?? defaultConfig.portfolio_bio],
+        ['footer_text', config.footer_text ?? defaultConfig.footer_text]
+      ])
+    });
+  }
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9f177d7511706ca8',t:'MTc3NzA1ODY4Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
